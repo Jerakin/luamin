@@ -9,6 +9,8 @@
 .br
 .Op Fl f | -file Ar file
 .br
+.Op Fl o | -overwrite Ar file
+.br
 .Op Fl a | -ast Ar ast
 .br
 .Op Fl v | -version
@@ -27,6 +29,8 @@ Show the help screen.
 Print minified version of the given Lua snippet.
 .It Sy "-f, --file <file>"
 Print minified version of the given Lua file.
+.It Sy "-o, --overwrite <file>"
+Write minified version of the given Lua file to the same file.
 .It Sy "-a, --ast <ast>"
 Print minified version of the given Lua AST. The AST must be compatible with
 .Xr luaparse 1
@@ -61,6 +65,11 @@ Print a minified version of the given Lua code snippet.
 Read the Lua code in the file
 .Ar foo.lua
 and print a minified version.
+.It Sy "luamin -o foo.lua"
+Read the Lua code in the file
+.Ar foo.lua
+and write it back to
+.Ar foo.lua
 .It Sy echo\ 'a\ =\ "foo"\ ..\ "bar"'\ |\ luamin\ -c
 Print a minified version of the Lua snippet that gets piped in.
 .It Sy "luaparse --scope 'a = 42' | luamin -a"

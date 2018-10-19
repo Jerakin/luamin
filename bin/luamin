@@ -8,6 +8,7 @@
 	var option = snippets.shift();
 	var isFile = false;
 	var isAST = false;
+	var overwrite = false;
 	var stdin = process.stdin;
 	var data;
 	var log = console.log;
@@ -19,6 +20,7 @@
 				'\nUsage:\n',
 				'\tluamin [-c | --code] [snippet ...]',
 				'\tluamin [-f | --file] [file ...]',
+				'\tluamin [-o | --overwrite] [file ...]',
 				'\tluamin [-a | --ast] [AST ...]',
 				'\tluamin [-v | --version]',
 				'\tluamin [-h | --help]',
@@ -40,6 +42,9 @@
 			isFile = true;
 		} else if (/^(?:-a|--ast)$/.test(option)) {
 			isAST = true;
+		} else if (/^(?:-o|--overwrite)$/.test(option)) {
+			isFile = true;
+			overwrite = true;
 		} else if (!/^(?:-c|--code)$/.test(option)) {
 			log('Unrecognized option `%s`.', option);
 			log('Try `luamin --help` for more information.');
@@ -54,6 +59,7 @@
 
 		snippets.forEach(function(snippet) {
 			var result;
+			var file_path = snippet;
 			if (isFile) {
 				try {
 					snippet = fs.readFileSync(snippet, 'utf8');
@@ -67,7 +73,16 @@
 					snippet = JSON.parse(snippet);
 				}
 				result = minify(snippet);
-				log(result);
+				if (isFile && overwrite) {
+					fs.writeFileSync(file_path, result, function(err) {
+				    	if(err) {
+							log(err);
+					    }
+					});
+				}
+				if (!overwrite) {
+					log(result);
+				}
 			} catch(error) {
 				log(error.message + '\n');
 				if (isAST) {
