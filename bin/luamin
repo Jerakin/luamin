@@ -118,9 +118,10 @@
 		stdin.on('data', function(chunk) {
 			data += chunk;
 		});
+
 		stdin.on('end', function() {
 			if (data.trim().length != 0) {
-				snippets.unshift(data.trim());
+				snippets = snippets.concat(data.trim().split("\n"));
 			}
 			main();
 		});
