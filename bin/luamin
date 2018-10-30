@@ -59,8 +59,8 @@
 
 		snippets.forEach(function(snippet) {
 			var result;
-			var file_path = snippet;
 			if (isFile) {
+				var file_path = snippet;
 				try {
 					snippet = fs.readFileSync(snippet, 'utf8');
 				} catch(error) {
